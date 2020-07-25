@@ -1,0 +1,58 @@
+
+const formToDo = document.querySelector('.formToDo-js'),
+  inputToDo = formToDo.querySelector('.inputToDo-js'),
+  listToDo = formToDo.querySelector(".listToDo-js");
+
+let toDoList = [];
+
+function viewToDo(text) {
+  const todo = document.createElement('li');
+  todo.className = 'todo';
+  todo.innerHTML = text;
+  listToDo.appendChild(todo);
+  console.log()
+
+  
+
+  saveToDo();
+}
+
+function saveToDo(text){
+  const toDos = {
+    value : text,
+    id : toDoList.length + 1
+  };
+  toDoList.push(toDos);
+  const tototo = JSON.stringify(toDoList);
+  localStorage.setItem('List',tototo);
+}
+
+function loadToDo(){
+  formToDo.addEventListener('submit', onSubmit);
+  const viewToDos = localStorage.getItem('List');
+  if (viewToDos !== null) {
+    const parsedToDos = JSON.parse(viewToDos);
+    parsedToDos.forEach(function(real) {
+      viewToDo(real.value);
+      
+      
+    });
+  } 
+  return;
+}  
+
+function onSubmit(event) {
+  event.preventDefault();
+  const value = inputToDo.value;
+  inputToDo.value = "";
+  saveToDo(value);
+}
+
+
+
+function init() {
+  loadToDo();
+}
+
+init();
+
